@@ -1,0 +1,196 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Apex Charts {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}	
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="container">
+                    <form action="{{ url_for('apextutorialdropdown') }}" method="POST">
+                    <div class="row text-center">
+                      <div class="form-group col-4">
+                            <select  id="dropdown1" name="id" class="form-control w-600">
+                                <option>Value</option>  
+                                <option>2115</option>
+                                <option>1562</option>
+                                <option>1584</option>
+                                <option>1892</option>
+                                <option>1487</option>
+                                <option>2223</option>
+                                <option>2966</option>
+                                <option>2448</option>
+                                <option>2905</option>
+                                <option>3838</option>
+                                <option>2917</option>
+                                <option>3327</option>
+                            </select>
+                      </div>
+                      <div class="col-4">
+                            <input type="submit" class="form-control w-600">
+                      </div>
+                      <div class="col-4">
+                        <button type="button" class="btn btn-default">Right</button>
+                      </div>
+                    </div>
+                    </form>
+                  </div>   
+                       
+            </div>
+            <div>
+
+               
+            </div>
+            
+
+            <!-- [ Next row] end -->
+            <div class="row">								
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Realtime Chart</h5>
+                        </div>
+                        <div class="card-body" style="position: relative; height:35vh">
+                            <canvas id="chartjs-line"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Realtime Chart</h5>
+                        </div>
+                        <div class="card-body" >
+                            <canvas id="chartjs2-line"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
+    <script src="/static/assets/js/pages/apex-chart-tutorial.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script> DONT NEED NO ERROR.. 
+-->
+{% block javascripts %}
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script> 
+
+    <script>
+    var dataObject = {{ dataObject | safe}};
+    document.addEventListener("DOMContentLoaded", function() {
+        // Line chart
+        new Chart(document.getElementById("chartjs-line"), {
+            type: "line",
+            data: {
+                labels: dataObject["months"],
+                datasets: [{
+                    label: "Sales ($)",
+                    fill: true,
+                    backgroundColor: "transparent",
+                    borderColor: 'rgba(5, 233, 17, 0.8)',
+                    data:  dataObject["sales"]
+                }, {
+                    label: "Orders",
+                    fill: true,
+                    backgroundColor: "transparent",
+                    borderColor: 'rgba(243, 39, 245, 0.8)',
+                    borderDash: [4, 4],
+                    data:  dataObject["orders"]
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    intersect: false
+                },
+                hover: {
+                    intersect: true
+                },
+                plugins: {
+                    filler: {
+                        propagate: false
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        reverse: true,
+                        gridLines: {
+                            color: "rgba(0,0,0,0.05)"
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 500
+                        },
+                        display: true,
+                        borderDash: [5, 5],
+                        gridLines: {
+                            color: "rgba(0,0,0,0)",
+                            fontColor: "#fff"
+                        }
+                    }]
+                }
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Line chart
+        new Chart(document.getElementById("chartjs2-line"), {
+            type: 'bar',
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+                datasets: [{
+                    label: 'My First Dataset',
+                    fill: true,
+                    backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                }]
+            },
+            options: {
+            scales: {
+            y: {
+                beginAtZero: true
+            },
+            }
+        }
+        });
+    });
+</script>
+{% endblock javascripts %}
